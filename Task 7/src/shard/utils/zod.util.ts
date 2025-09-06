@@ -1,4 +1,4 @@
-import z, { ZodError, ZodType } from "zod";
+import z, { ZodType, ZodError } from "zod";
 import { HttpErrorStatus, ModuleNameType } from "./types.util";
 import { CustomError } from "./errors.util";
 

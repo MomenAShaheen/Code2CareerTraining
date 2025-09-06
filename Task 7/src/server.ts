@@ -6,7 +6,8 @@ import { CustomError, handleError } from "./shard/utils/errors.util";
 import { responseMiddleware } from "./middlewares/responseMiddleware";
 import { courseRouter } from "./module/courses/courses.router";
 
-import { PORT, JWT_SECRET } from "./config/env.config";
+import { PORT, JWT_SECRET, isProduction } from "./config/env.config";
+import { error } from "node:console";
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     handleError(err, res);
     return;
   }
+  console.log(err);
   res.apiError("internal server error", 500, "General");
 });
 
@@ -48,6 +50,6 @@ app.use((req, res) => {
 //const PORT = 4000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  // console.log(`🌐 Environment: ${isProduction ? "Production" : "Development"}`);
+  console.log(`🌐 Environment: ${isProduction ? "Production" : "Development"}`);
   console.log(`🔑 JWT Secret loaded: ${JWT_SECRET ? "Yes" : "No"}`);
 });

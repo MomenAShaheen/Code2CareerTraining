@@ -7,7 +7,7 @@ import { JWT_SECRET, JWT_EXPIRES_IN } from "../../../config/env.config";
 type JWT_PAYLOAD = { sub: string; name: string; role: userRoles };
 //getEnvOrThrow('JWT_SECRET');
 const secret = JWT_SECRET;
-const expiresIn = JWT_EXPIRES_IN;
+const expiresIn = JWT_EXPIRES_IN; //JWT_EXPIRES_IN;
 export const singJWT = (payload: JWT_PAYLOAD, options?: SignOptions) => {
   return jwt.sign(payload, secret, {
     expiresIn: expiresIn as jwt.SignOptions["expiresIn"],

@@ -28,15 +28,16 @@
 
 // export const { PORT, NODE_ENV, JWT_SECRET, JWT_EXPIRES_IN } = env.data;
 
-// export const isProduction = NODE_ENV === "production";
-// export const isDevelopment = NODE_ENV === "development";
-
-// import dotenv from "dotenv";
-// dotenv.config();
+import dotenv from "dotenv";
+dotenv.config();
 
 export const PORT = process.env.PORT ? parseInt(process.env.PORT) : 4000;
 export const NODE_ENV = process.env.NODE_ENV || "development";
 export const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-for-dev";
+export const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
+
+export const isProduction = NODE_ENV === "production";
+export const isDevelopment = NODE_ENV === "development";
 
 // // // Add console.log to debug
 // console.log("🔧 Environment loaded:", {
