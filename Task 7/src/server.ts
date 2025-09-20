@@ -6,10 +6,10 @@ import { CustomError, handleError } from "./shard/utils/errors.util";
 import { responseMiddleware } from "./middlewares/responseMiddleware";
 import { courseRouter } from "./module/courses/courses.router";
 
-import { PORT, JWT_SECRET, isProduction } from "./config/env.config";
+import { PORT, JWT_SECRET, isProduction, isTest } from "./config/env.config";
 import { error } from "node:console";
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -48,8 +48,12 @@ app.use((req, res) => {
   });
 });
 //const PORT = 4000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🌐 Environment: ${isProduction ? "Production" : "Development"}`);
-  console.log(`🔑 JWT Secret loaded: ${JWT_SECRET ? "Yes" : "No"}`);
-});
+if (!isTest) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(
+      `🌐 Environment: ${isProduction ? "Production" : "Development"}`
+    );
+    console.log(`🔑 JWT Secret loaded: ${JWT_SECRET ? "Yes" : "No"}`);
+  });
+}

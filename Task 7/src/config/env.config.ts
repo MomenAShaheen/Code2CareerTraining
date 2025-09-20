@@ -38,6 +38,7 @@ export const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 
 export const isProduction = NODE_ENV === "production";
 export const isDevelopment = NODE_ENV === "development";
+export const isTest = NODE_ENV === "test";
 
 // // // Add console.log to debug
 // console.log("🔧 Environment loaded:", {

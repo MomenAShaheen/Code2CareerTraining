@@ -63,7 +63,7 @@ export class CourseController {
       );
     }
 
-    res.apiSuccess("Updated successfully", course, 200);
+    res.apiSuccess("Created successfully", course, 200);
   };
 
   updateCourse = async (

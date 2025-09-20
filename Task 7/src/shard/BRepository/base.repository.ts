@@ -6,11 +6,9 @@ export abstract class BaseRepository<T extends BaseEntity>
 {
   protected items: T[] = [];
 
-  // constructor(initItems: T[] = []) {
-  //   this.items = initItems;
-  // }
-
-  constructor() {}
+  constructor(initItems: T[] = []) {
+    this.items = initItems;
+  }
 
   getAll(): T[] {
     return [...this.items];

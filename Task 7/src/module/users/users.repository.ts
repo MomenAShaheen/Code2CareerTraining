@@ -39,3 +39,5 @@ export class UserRepository extends BaseRepository<User> {
     return this.create(item);
   }
 }
+
+export const admin_test_user = admin;

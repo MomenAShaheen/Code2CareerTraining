@@ -2,8 +2,8 @@ import { BaseRepository } from "../../shard/BRepository/base.repository";
 import { Course } from "./courses.entity";
 
 export class CourseRepository extends BaseRepository<Course> {
-  constructor() {
-    super();
+  constructor(initItemes: Course[] = []) {
+    super(initItemes);
   }
 
   getCourse(id: string): Course | undefined {
