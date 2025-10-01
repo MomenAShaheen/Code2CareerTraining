@@ -18,7 +18,7 @@ export class UserController {
   getUser = (req: Request, res: Response) => {
     let id = req.userID ? req.userID : "0";
     console.log(id);
-    const user = this.service.getUser(id);
+    const user = this.service.getUser(parseInt(id));
     console.log(user);
     res.apiSuccess("User Information", user, 200);
   };
@@ -30,7 +30,10 @@ export class UserController {
       "USER"
     );
 
-    const user = await this.service.updateUser(req.userID!, verfiedPayload);
+    const user = await this.service.updateUser(
+      parseInt(req.userID!),
+      verfiedPayload
+    );
     if (!user) {
       throw new CustomError("Existing User", "AUTH", HttpErrorStatus.Conflict);
     }

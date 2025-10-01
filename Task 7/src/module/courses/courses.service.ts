@@ -1,3 +1,4 @@
+import { Prisma } from "../../../generated/prisma";
 import { removeFields } from "../../shard/utils/object.util";
 import {
   getAllCourseResponseDTO,
@@ -11,8 +12,8 @@ import { CourseRepository } from "./courses.repository";
 class CourseSerive {
   private repository = new CourseRepository();
 
-  getCourse(id: string): Course | null {
-    const course = this.repository.getCourse(id);
+  async getCourse(id: number) {
+    const course = await this.repository.getCourse(id);
     console.log(course);
     if (!course) {
       return null;
@@ -20,9 +21,7 @@ class CourseSerive {
     return course;
   }
 
-  getUserCourses(
-    creatorID: string
-  ): Promise<getCoursesResponseDTO | undefined> {
+  getUserCourses(creatorID: number) {
     return this.repository.getCourses(creatorID);
   }
 
@@ -31,29 +30,28 @@ class CourseSerive {
   }
 
   async createCourse(
-    creatorID: string,
+    creatorID: number,
     title: string,
     description: string,
     image?: string
   ) {
-    const course: Course = {
-      id: "0",
+    const course: Prisma.CourseCreateInput = {
       title: title,
       description: description,
       image: image,
-      creatorID: creatorID,
       createdAt: new Date(),
       updatedAt: new Date(),
+      creator: { connect: { id: creatorID } },
     };
     return this.repository.createCourse(course);
   }
 
-  async updateCourse(id: string, course: updateCourseDTO) {
+  async updateCourse(id: number, course: updateCourseDTO) {
     // const tcourse = { ...course, updatedAt: new Date() };
     return this.repository.update(id, course);
   }
 
-  async deleteCourse(id: string) {
+  async deleteCourse(id: number) {
     return this.repository.deleteCourse(id);
   }
 }

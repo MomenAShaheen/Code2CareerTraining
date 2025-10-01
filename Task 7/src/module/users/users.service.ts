@@ -6,8 +6,8 @@ import { UserRepository } from "./users.repository";
 class UserService {
   private repository = new UserRepository();
 
-  getUser(id: string): usersMeResponseDTO | null {
-    const user = this.repository.getUser(id);
+  async getUser(id: number): Promise<usersMeResponseDTO | null> {
+    const user = await this.repository.getUser(id);
     console.log(user);
     if (!user) {
       return null;
@@ -15,8 +15,9 @@ class UserService {
     return removeFields(user, ["password"]);
   }
 
-  getUserByEmail(email: string): Promise<User | undefined> {
-    return this.repository.getUserByEmail(email);
+  async getUserByEmail(email: string): Promise<User | null> {
+    const user = this.repository.getUserByEmail(email);
+    return user;
   }
 
   async createUser(
@@ -25,8 +26,7 @@ class UserService {
     password: string,
     role: userRoles = "STUDENT"
   ) {
-    const user: User = {
-      id: "0",
+    const user = {
       name: name,
       email: email,
       password: password,
@@ -37,8 +37,8 @@ class UserService {
     return this.repository.createUser(user);
   }
 
-  async updateUser(id: string, user: updateUserDTO) {
-    return this.repository.update(id, user);
+  async updateUser(id: number, user: updateUserDTO) {
+    return this.repository.updateUser(id, user);
   }
 }
 

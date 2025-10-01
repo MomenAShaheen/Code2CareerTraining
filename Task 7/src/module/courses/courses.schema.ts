@@ -3,7 +3,7 @@ import { Course } from "./courses.entity";
 import { createCourseDTO, updateCourseDTO } from "./courses.dto";
 
 export const CourseSchema = z.object({
-  id: z.string(), // Assuming it's a UUID, adjust if needed
+  id: z.number(), // Assuming it's a UUID, adjust if needed
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
   image: z.string().url().optional().or(z.literal("")), // Optional URL or empty string

@@ -1,31 +1,37 @@
+import { Prisma, PrismaClient } from "../../../generated/prisma";
 import { BaseRepository } from "../../shard/BRepository/base.repository";
 import { Course } from "./courses.entity";
 
 export class CourseRepository extends BaseRepository<Course> {
-  constructor() {
-    super();
+  private prisma = new PrismaClient().course;
+
+  async getCourse(id: number) {
+    return this.prisma.findUnique({
+      where: { id },
+    });
   }
 
-  getCourse(id: string): Course | undefined {
-    return this.getById(id);
+  async getCourses(creatorID: number) {
+    return this.prisma.findMany({
+      where: { creatorID: creatorID },
+    });
+    // return this.items.filter((item) => item.creatorID == creatorID);
   }
 
-  async getCourses(creatorID: string): Promise<Course[] | undefined> {
-    return this.items.filter((item) => item.creatorID == creatorID);
+  async createCourse(item: Prisma.CourseCreateInput) {
+    return this.prisma.create({
+      data: item,
+    });
   }
 
-  async createCourse(item: Omit<Course, "id">): Promise<Course> {
-    return this.create(item);
+  async updateCourse(id: number, item: Prisma.CourseUpdateInput) {
+    return this.prisma.update({
+      data: item,
+      where: { id },
+    });
   }
 
-  async updateCourse(
-    id: string,
-    item: Partial<Course>
-  ): Promise<Course | undefined> {
-    return this.update(id, item);
-  }
-
-  async deleteCourse(id: string): Promise<Boolean> {
-    return this.delete(id);
+  async deleteCourse(id: number) {
+    return this.prisma.delete({ where: { id } });
   }
 }

@@ -1,8 +1,9 @@
+import { PrismaClient } from "../../../generated/prisma";
 import { BaseRepository } from "../../shard/BRepository/base.repository";
 import { User } from "./users.entity";
 
 const admin: User = {
-  id: "0",
+  id: 0,
   name: "ADMIN",
   email: "admin@no.com",
   password:
@@ -12,30 +13,34 @@ const admin: User = {
   updatedAt: new Date(),
 };
 
-export class UserRepository extends BaseRepository<User> {
-  constructor() {
-    super();
-    this.items = [admin];
+export class UserRepository {
+  private prisma = new PrismaClient().user;
+
+  async getUser(id: number) {
+    return await this.prisma.findUnique({
+      where: { id },
+    });
   }
 
-  getUser(id: string): User | undefined {
-    return this.getById(id);
+  async getUserByEmail(email: string) {
+    return this.prisma.findUnique({
+      where: { email },
+    });
   }
 
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    return this.items.find((item) => item.email == email);
+  async createUser(item: Omit<User, "id">) {
+    return this.prisma.create({ data: item });
   }
 
-  async createUser(item: Omit<User, "id">): Promise<User> {
-    return this.create(item);
+  async updateUser(id: number, item: Partial<User>) {
+    return this.prisma.update({
+      data: item,
+      where: { id },
+    });
   }
 
-  async updateUser(id: string, item: Partial<User>): Promise<User | undefined> {
-    return this.update(id, item);
-  }
-
-  async createCoach(item: Omit<User, "id">): Promise<User> {
+  async createCoach(item: Omit<User, "id">) {
     item.role = "COACH";
-    return this.create(item);
+    return this.createUser(item);
   }
 }

@@ -27,7 +27,11 @@ class AuthService {
     if (!isVerifyed) {
       return undefined;
     }
-    const token = singJWT({ sub: user.id, name: user.name, role: user.role });
+    const token = singJWT({
+      sub: user.id.toString(),
+      name: user.name,
+      role: user.role,
+    });
     return {
       user: removeFields(user, ["password"]),
       token: token,

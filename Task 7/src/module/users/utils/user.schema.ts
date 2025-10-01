@@ -3,7 +3,7 @@ import { User } from "../users.entity";
 import { createChochDTO, updateUserDTO } from "../users.dto";
 
 export const UserSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email format"),
   password: z.string().min(6, "Password must be at least 6 characters"),

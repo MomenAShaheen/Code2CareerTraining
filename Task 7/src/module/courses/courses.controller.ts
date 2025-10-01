@@ -10,14 +10,16 @@ export class CourseController {
   private service = courseService;
 
   getCourse = (req: Request, res: Response) => {
-    let id = req.params.id;
-    if (!id) {
+    let ids = req.params.id;
+    if (!ids) {
       throw new CustomError(
         "Please provide course id",
         "COURSE",
         HttpErrorStatus.Conflict
       );
     }
+
+    const id = parseInt(ids);
     const course = this.service.getCourse(id);
     console.log(course);
     res.apiSuccess("Course Information", course, 200);
@@ -26,7 +28,8 @@ export class CourseController {
   getMyCourses = (req: Request, res: Response) => {
     let id = req.userID ? req.userID : "0";
     console.log(id);
-    const courses = this.service.getUserCourses(id);
+    const idi = parseInt(id);
+    const courses = this.service.getUserCourses(idi);
     console.log(courses);
     res.apiSuccess("Courses Information", courses, 200);
   };
@@ -48,7 +51,7 @@ export class CourseController {
     );
 
     const course = await this.service.createCourse(
-      req.userID ? req.userID : "0",
+      req.userID ? parseInt(req.userID) : 0,
       verfiedPayload.title,
       verfiedPayload.description,
       req.file?.path
@@ -78,7 +81,7 @@ export class CourseController {
       "COURSE"
     );
 
-    const checkCourse = await this.service.getCourse(verfiedID.id);
+    const checkCourse = await this.service.getCourse(parseInt(verfiedID.id));
 
     if (!(checkCourse?.creatorID === req.userID || req.userRole === "ADMIN")) {
       throw new CustomError(
@@ -89,7 +92,7 @@ export class CourseController {
     }
     verfiedPayload.image = req.file?.path;
     const course = await this.service.updateCourse(
-      verfiedID.id,
+      parseInt(verfiedID.id),
       verfiedPayload
     );
     if (!course) {
@@ -106,7 +109,8 @@ export class CourseController {
     req: Request<{ id: string }, {}, {}>,
     res: Response
   ) => {
-    const verfiedID = await zodValidation(idParamSchema, req.params, "COURSE");
+    const verfiedIDs = await zodValidation(idParamSchema, req.params, "COURSE");
+    const verfiedID = parseInt(verfiedIDs.id);
     // if (!id) {
     //   throw new CustomError(
     //     "Please provide course id",
@@ -116,7 +120,7 @@ export class CourseController {
     // }
 
     console.log(verfiedID);
-    const checkCourse = await this.service.getCourse(verfiedID.id);
+    const checkCourse = await this.service.getCourse(verfiedID);
 
     if (!(checkCourse?.creatorID === req.userID || req.userRole === "ADMIN")) {
       throw new CustomError(
@@ -126,7 +130,7 @@ export class CourseController {
       );
     }
 
-    const isDeleted = await this.service.deleteCourse(verfiedID.id);
+    const isDeleted = await this.service.deleteCourse(verfiedID);
     if (isDeleted) {
       res.apiEmpty("Deleted Successfully", 200);
     } else {

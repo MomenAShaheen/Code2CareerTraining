@@ -15,22 +15,22 @@ export abstract class BaseRepository<T extends BaseEntity>
   getAll(): T[] {
     return [...this.items];
   }
-  getById(id: string): T | undefined {
+  getById(id: number): T | undefined {
     return this.items.find((item) => item.id === id);
   }
   create(item: Omit<T, "id">): T {
-    const newItem = { ...item, id: this.generateId() } as T;
+    const newItem = { ...item, id: 0 } as T;
     this.items.push(newItem);
     return newItem;
   }
-  update(id: string, item: Partial<T>): T | undefined {
+  update(id: number, item: Partial<T>): T | undefined {
     const index = this.items.findIndex((i) => i.id === id);
     if (index === -1) return undefined;
     const updatedItem = { ...this.items[index], ...item, id } as T;
     this.items[index] = updatedItem;
     return updatedItem;
   }
-  delete(id: string): boolean {
+  delete(id: number): boolean {
     const initialLength = this.items.length;
     this.items = this.items.filter((item) => item.id !== id);
     return this.items.length !== initialLength;
@@ -44,7 +44,7 @@ export abstract class BaseRepository<T extends BaseEntity>
     });
   }
 
-  private generateId(): string {
-    return Math.random().toString(36).substring(2, 9);
-  }
+  // private generateId(): number {
+  //   return Math.random().tonumber(36).subnumber(2, 9);
+  // }
 }
