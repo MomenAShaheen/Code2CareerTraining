@@ -5,13 +5,13 @@ import {
   getCoursesResponseDTO,
   updateCourseDTO,
 } from "./courses.dto";
-import { Course } from "./courses.entity";
+import { ICourse } from "./courses.entity";
 import { CourseRepository } from "./courses.repository";
 
 class CourseSerive {
   private repository = new CourseRepository();
 
-  getCourse(id: string): Course | null {
+  getCourse(id: string): ICourse | null {
     const course = this.repository.getCourse(id);
     console.log(course);
     if (!course) {
@@ -36,7 +36,7 @@ class CourseSerive {
     description: string,
     image?: string
   ) {
-    const course: Course = {
+    const course: ICourse = {
       id: "0",
       title: title,
       description: description,

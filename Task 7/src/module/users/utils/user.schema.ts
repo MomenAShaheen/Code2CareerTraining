@@ -1,5 +1,5 @@
 import { z, ZodType } from "zod";
-import { User } from "../users.entity";
+import { IUser } from "../users.entity";
 import { createChochDTO, updateUserDTO } from "../users.dto";
 
 export const UserSchema = z.object({
@@ -10,7 +10,7 @@ export const UserSchema = z.object({
   role: z.enum(["ADMIN", "COACH", "STUDENT"]),
   createdAt: z.date(),
   updatedAt: z.date(),
-}) satisfies ZodType<User>;
+}) satisfies ZodType<IUser>;
 
 export const UpdateUserSchema = UserSchema.pick({
   email: true,

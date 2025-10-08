@@ -1,5 +1,5 @@
 import z, { ZodType } from "zod";
-import { Course } from "./courses.entity";
+import { ICourse } from "./courses.entity";
 import { createCourseDTO, updateCourseDTO } from "./courses.dto";
 
 export const CourseSchema = z.object({
@@ -10,7 +10,7 @@ export const CourseSchema = z.object({
   createdAt: z.coerce.date(), // Handles both Date objects and string dates
   updatedAt: z.coerce.date(),
   creatorID: z.string(),
-}) satisfies ZodType<Course>;
+}) satisfies ZodType<ICourse>;
 
 export const CreateCourseSchema = CourseSchema.pick({
   title: true,

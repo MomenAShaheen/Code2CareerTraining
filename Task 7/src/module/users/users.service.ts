@@ -1,22 +1,28 @@
 import { removeFields } from "../../shard/utils/object.util";
 import { usersMeResponseDTO, updateUserDTO } from "./users.dto";
-import { User, userRoles } from "./users.entity";
+import { IUser, userRoles } from "./users.entity";
 import { UserRepository } from "./users.repository";
 
 class UserService {
   private repository = new UserRepository();
 
-  getUser(id: string): usersMeResponseDTO | null {
-    const user = this.repository.getUser(id);
+  async getUser(id: string): Promise<usersMeResponseDTO | null> {
+    const duser = await this.repository.getUser(id);
+    const user = duser?.toObject({ virtuals: false });
     console.log(user);
     if (!user) {
       return null;
     }
-    return removeFields(user, ["password"]);
+    return removeFields(user, ["password", "__v", "_id"]);
   }
 
-  getUserByEmail(email: string): Promise<User | undefined> {
-    return this.repository.getUserByEmail(email);
+  async getUserByEmail(email: string): Promise<IUser | null> {
+    const duser = await this.repository.getUserByEmail(email);
+    const user = duser?.toObject({ virtuals: false });
+    if (!user) {
+      return null;
+    }
+    return removeFields(user, ["__v", "_id"]);
   }
 
   async createUser(
@@ -25,7 +31,7 @@ class UserService {
     password: string,
     role: userRoles = "STUDENT"
   ) {
-    const user: User = {
+    const user: IUser = {
       id: "0",
       name: name,
       email: email,

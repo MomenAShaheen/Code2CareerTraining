@@ -2,7 +2,7 @@ import { CustomError } from "../../shard/utils/errors.util";
 import { removeFields } from "../../shard/utils/object.util";
 import { HttpErrorStatus } from "../../shard/utils/types.util";
 import { zodValidation } from "../../shard/utils/zod.util";
-import { User } from "../users/users.entity";
+import { IUser } from "../users/users.entity";
 import { userService } from "../users/users.service";
 import {
   LoginDTO,

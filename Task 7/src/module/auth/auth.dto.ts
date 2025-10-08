@@ -1,4 +1,4 @@
-import { User } from "../users/users.entity";
+import { IUser } from "../users/users.entity";
 
 export type LoginDTO = {
   email: string;
@@ -6,10 +6,10 @@ export type LoginDTO = {
 };
 
 export type LoginResponseDTO = {
-  user: Omit<User, "password">;
+  user: Omit<IUser, "password">;
   token: string;
 };
 
-export type RegisterDTO = Pick<User, "email" | "name" | "password">;
+export type RegisterDTO = Pick<IUser, "email" | "name" | "password">;
 
-export type RegisterResponseDTO = Omit<User, "password">;
+export type RegisterResponseDTO = Omit<IUser, "password">;

@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
 import { BaseRepository } from "../../shard/BRepository/base.repository";
-import { User } from "./users.entity";
+import User, { IUser } from "./users.entity";
+import { removeFields } from "../../shard/utils/object.util";
 
-const admin: User = {
+const admin: IUser = {
   id: "0",
   name: "ADMIN",
   email: "admin@no.com",
@@ -12,30 +14,34 @@ const admin: User = {
   updatedAt: new Date(),
 };
 
-export class UserRepository extends BaseRepository<User> {
+export class UserRepository extends BaseRepository<IUser> {
   constructor() {
     super();
     this.items = [admin];
   }
 
-  getUser(id: string): User | undefined {
-    return this.getById(id);
+  async getUser(id: string) {
+    return User.findById({ id }).exec(); //this.getById(id);
   }
 
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    return this.items.find((item) => item.email == email);
+  async getUserByEmail(email: string) {
+    return User.findOne({ email }).exec();
   }
 
-  async createUser(item: Omit<User, "id">): Promise<User> {
-    return this.create(item);
+  async createUser(item: Omit<IUser, "id">) {
+    const user = new User(item);
+    const userflat = (await user.save()).toObject();
+    return userflat;
   }
 
-  async updateUser(id: string, item: Partial<User>): Promise<User | undefined> {
-    return this.update(id, item);
+  async updateUser(id: string, item: Partial<IUser>) {
+    // const mid = new mongoose.Types.ObjectId(id);
+    return User.updateOne({ _id: id }, item).exec();
   }
 
-  async createCoach(item: Omit<User, "id">): Promise<User> {
+  async createCoach(item: Omit<IUser, "id">) {
     item.role = "COACH";
-    return this.create(item);
+    const user = new User(item);
+    return user.save();
   }
 }

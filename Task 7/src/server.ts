@@ -8,8 +8,11 @@ import { courseRouter } from "./module/courses/courses.router";
 
 import { PORT, JWT_SECRET, isProduction } from "./config/env.config";
 import { error } from "node:console";
+import { connectDB } from "./shard/script/mangoos.script";
 
 const app = express();
+
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded());
